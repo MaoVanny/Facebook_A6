@@ -18,9 +18,9 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'email',
+        'username',
         'password',
+        'phone_number',
     ];
 
     /**
@@ -38,7 +38,10 @@ class User extends Authenticatable
      *
      * @var array<string, string>
      */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+  
+    //  public static function createOrUpdate($request, $id = null) {
+    //     $user = $request->only('username', 'phone_number', 'password');
+    //     $user = self::updateOrCreate(['id' => $id], $user);
+    //     return $user;
+    // }
 }

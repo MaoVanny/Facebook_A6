@@ -2,6 +2,9 @@
 use App\Http\Controllers\api\HomePage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+
+use PHPUnit\Framework\Reorderable;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,3 +23,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 Route::get('/home',[HomePage::class, 'index']);
+
+// user
+Route::post('register/account', [AuthController::class, 'register'])->name('register');
+Route::post('login', [AuthController::class, 'login']);
+Route::post('logout',[AuthController::class, 'logout'])->middleware('auth:sanctum');
