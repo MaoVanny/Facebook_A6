@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable
 {
@@ -44,4 +45,8 @@ class User extends Authenticatable
     //     $user = self::updateOrCreate(['id' => $id], $user);
     //     return $user;
     // }
+
+    public function comment():HasMany{
+        return $this->hasMany(Comment::class);
+    }
 }
