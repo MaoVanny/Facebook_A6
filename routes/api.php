@@ -26,6 +26,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('/home',[HomePage::class, 'index']);
 // user
+
+// user 
+Route::get('user/list', [AuthController::class, 'index']);
 Route::post('register/account', [AuthController::class, 'register'])->name('register');
 Route::post('login', [AuthController::class, 'login']);
 Route::post('logout',[AuthController::class, 'logout'])->middleware('auth:sanctum');
@@ -36,3 +39,8 @@ Route::post('/comments',[CommentController::class, 'store']);
 Route::get('/comments/{id}',[CommentController::class, 'show']);
 Route::put('/comments/{id}',[CommentController::class, 'update']);
 Route::delete('/comments/{id}',[CommentController::class, 'destroy']);
+// update users profile
+Route::put('update/profile/{id}', [AuthController::class, 'update']);
+
+// view users profile
+Route::get('user/show/{id}',[AuthController::class, 'show']);
