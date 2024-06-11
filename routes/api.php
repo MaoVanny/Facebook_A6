@@ -24,7 +24,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('/home',[HomePage::class, 'index']);
 
-// user
+// user 
+Route::get('user/list', [AuthController::class, 'index']);
 Route::post('register/account', [AuthController::class, 'register'])->name('register');
 Route::post('login', [AuthController::class, 'login']);
 Route::post('logout',[AuthController::class, 'logout'])->middleware('auth:sanctum');
+
+// update users profile
+Route::put('update/profile/{id}', [AuthController::class, 'update']);
+
+// view users profile
+Route::get('user/show/{id}',[AuthController::class, 'show']);

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Http\Requests\RegisterRequest;
 use App\Models\User;
 
@@ -14,6 +15,25 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
+    // get users
+    public function index(Request $request)
+    {
+        try {
+            $users = User::all();
+            return response()->json([
+                'status' => true,
+                'message' => 'Getting users successfully',
+                'data' => $users
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+
     public function register(Request $request)
     {
         try {
@@ -22,7 +42,7 @@ class AuthController extends Controller
                 [
                     'username' => 'required',
                     'phone_number' => 'required',
-                    'password' => 'required'
+                    'password' => 'required|min:8'
                 ]
             );
             if ($validateUser->fails()) {
@@ -55,14 +75,14 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(), [
             'username'     => 'required',
             'phone_number'     => 'required|string|max:255',
-            'password'  => 'required|string'
-          ]);
+            'password'  => 'required|string|min:8'
+        ]);
 
         if ($validator->fails()) {
             return response()->json($validator->errors());
         }
 
-        $credentials = $request->only('phone_number','username', 'password');
+        $credentials = $request->only('phone_number', 'username', 'password');
 
         if (!Auth::attempt($credentials)) {
             return response()->json([
@@ -80,16 +100,16 @@ class AuthController extends Controller
         ]);
     }
 
-    public function index(Request $request)
-    {
-        $user = $request->user();
-        $permissions = $user->getAllPermissions();
-        $roles = $user->getRoleNames();
-        return response()->json([
-            'message' => 'Login success',
-            'data' =>$user,
-        ]);
-    }
+    // public function index(Request $request)
+    // {
+    //     $user = $request->user();
+    //     $permissions = $user->getAllPermissions();
+    //     $roles = $user->getRoleNames();
+    //     return response()->json([
+    //         'message' => 'Login success',
+    //         'data' => $user,
+    //     ]);
+    // }
 
 
     public function logout(Request $request)
@@ -101,4 +121,48 @@ class AuthController extends Controller
         ], 200);
     }
 
+    // view users profile
+    public function show(string $id)
+    {
+        return User::find($id);
+    }
+
+    // update users profile
+    public function update(Request $request, string $id)
+    {
+        try {
+            $user = User::findOrFail($id);
+
+            $validator = Validator::make($request->all(), [
+                'username' => 'required',
+                'phone_number' => 'required|unique:users,phone_number,' . $user->id,
+                'password' => 'nullable|string|min:8',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Validation error',
+                    'errors' => $validator->errors()
+                ], 400);
+            }
+
+            $user->update([
+                'username' => $request->username,
+                'phone_number' => $request->phone_number,
+                'password' => $request->password ? Hash::make($request->password) : $user->password,
+            ]);
+
+            return response()->json([
+                'status' => true,
+                'message' => 'User profile updated successfully',
+                'data' => $user
+            ], 200);
+        } catch (\Exception $error) {
+            return response()->json([
+                'status' => false,
+                'message' => $error->getMessage()
+            ], 500);
+        }
+    }
 }
