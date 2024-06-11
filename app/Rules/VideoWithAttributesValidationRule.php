@@ -14,7 +14,7 @@ class VideoWithAttributesValidationRule implements Rule
      * @return bool
      */
     public function passes($attribute, $value)
-    {        
+    {
         // Check if the file is a video file
         if (!is_file($value)) {
             return false;

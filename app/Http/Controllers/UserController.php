@@ -58,17 +58,30 @@ class UserController extends Controller
      *         @OA\JsonContent(
      *             type="object",
      *             @OA\Property(property="message", type="string", example="The given data was invalid."),
-     *             @OA\Property(property="errors", type="object", example={"name": {"The name field is required."}})
+     *             @OA\Property(property="errors", type="object",
+     *                 @OA\Property(property="username", type="array",
+     *                     @OA\Items(type="string", example="The username field is required.")
+     *                 ),
+     *                 @OA\Property(property="email", type="array",
+     *                     @OA\Items(type="string", example="The email field is required.")
+     *                 ),
+     *                 @OA\Property(property="password", type="array",
+     *                     @OA\Items(type="string", example="The password field is required.")
+     *                 ),
+     *                 @OA\Property(property="phone_number", type="array",
+     *                     @OA\Items(type="string", example="The phone number field is required.")
+     *                 )
+     *             )
      *         )
      *     )
      * )
      */
-
     public function store(UserRequest $request)
     {
         $user = User::create($request->all());
         return new UserResource($user);
     }
+
 
 
     /**
@@ -159,17 +172,18 @@ class UserController extends Controller
      *         @OA\JsonContent(
      *             type="object",
      *             @OA\Property(property="message", type="string", example="The given data was invalid."),
-     *             @OA\Property(property="errors", type="object", example={"name": {"The name field is required."}})
      *         )
      *     )
      * )
      */
-
     public function update(UserRequest $request, string $id)
     {
         $user = User::find($id);
-        $validatedData = $request->validated();
-        $user->fill($validatedData)->save();
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+
+        $user->update($request->all());
         return new UserResource($user);
     }
 

@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\Post;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable
 {
@@ -19,9 +20,10 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'email',
+        'username',
         'password',
+        'email',
+        'phone_number'
     ];
 
     /**
@@ -46,5 +48,15 @@ class User extends Authenticatable
     public function posts()
     {
         return $this->hasMany(Post::class);
+
+        //  public static function createOrUpdate($request, $id = null) {
+        //     $user = $request->only('username', 'phone_number', 'password');
+        //     $user = self::updateOrCreate(['id' => $id], $user);
+        //     return $user;
+    }
+
+    public function comment(): HasMany
+    {
+        return $this->hasMany(Comment::class);
     }
 }

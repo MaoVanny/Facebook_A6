@@ -4,14 +4,14 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CommentRequest extends FormRequest
+class RegisterRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return true;
+        return false;
     }
 
     /**
@@ -22,10 +22,9 @@ class CommentRequest extends FormRequest
     public function rules(): array
     {
         return [
-
-            'user_id' => 'required|integer',
-            'post_id' => 'required|integer',
-            'description' => 'required|string|max:255',
+            'username' => 'required',
+            'phone_number' => 'required|email|unique:users,phone_number',
+            'password' => 'required'
         ];
     }
 }

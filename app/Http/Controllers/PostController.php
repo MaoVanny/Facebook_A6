@@ -6,6 +6,7 @@ use App\Models\Post;
 use Illuminate\Http\Request;
 use App\Http\Resources\PostResource;
 use App\Http\Requests\PostRequest;
+use App\Http\Requests\UserRequest;
 
 class PostController extends Controller
 {
@@ -73,26 +74,133 @@ class PostController extends Controller
 
 
     /**
-     * Display the specified resource.
+     * @OA\Get(
+     *     path="/api/post/{id}",
+     *     summary="Display the specified post",
+     *     tags={"Posts"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID of the post to retrieve",
+     *         @OA\Schema(
+     *             type="integer",
+     *             format="int64"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Post details found",
+     *         @OA\JsonContent(ref="#/components/schemas/PostResource")
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Post not found",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="message", type="string", example="Post not found")
+     *         )
+     *     )
+     * )
      */
-    public function show(Post $post)
+    public function show(string $id)
     {
-        //
+        $post = Post::find($id);
+        if (!$post) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+        return new PostResource($post);
     }
+
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Post $post)
+
+
+    /**
+     * @OA\Put(
+     *     path="/api/post/update/{id}",
+     *     summary="Update a post",
+     *     tags={"Posts"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID of the post to update",
+     *         @OA\Schema(
+     *             type="integer",
+     *             format="int64"
+     *         )
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         description="Post data to update",
+     *         @OA\JsonContent(ref="#/components/schemas/PostRequest")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Post updated successfully",
+     *         @OA\JsonContent(ref="#/components/schemas/PostResource")
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Post not found",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="message", type="string", example="Post not found")
+     *         )
+     *     )
+     * )
+     */
+    public function update(PostRequest $request, string $id)
     {
-        //
+        $post = Post::find($id);
+        if (!$post) {
+            return response()->json(['message' => 'Post not found'], 404);
+        }
+        $post->update($request->all());
+        return new PostResource($post);
     }
+
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Post $post)
+
+    /**
+     * @OA\Delete(
+     *     path="/api/post/delete/{id}",
+     *     summary="Delete a post",
+     *     tags={"Posts"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID of the post to delete",
+     *         @OA\Schema(
+     *             type="integer",
+     *             format="int64"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=204,
+     *         description="Post deleted successfully"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Post not found",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="message", type="string", example="Post not found")
+     *         )
+     *     )
+     * )
+     */
+    public function destroy(string $id)
     {
-        //
+        $post = Post::find($id);
+        $post->delete();
+        return response()->json(null, 204);
     }
 }
