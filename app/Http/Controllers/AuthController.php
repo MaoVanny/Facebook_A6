@@ -167,31 +167,29 @@ class AuthController extends Controller
     }
 
     // update image profile
+
     public function uploadProfile(Request $request, $id)
     {
+        $validateUser = Validator::make($request->all(), [
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+        ]);
+        if ($validateUser->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'validation error',
+                'errors' => $validateUser->errors()
+            ], 422);
+        }
+        $img = $request->image;
+        $ext = $img->getClientOriginalExtension();
+        $imageName = time() . '.' . $ext;
+        $img->move(public_path() . '/uploads/', $imageName);
+
         try {
-            // $validateUser = Validator::make($request->all(), [
-            //     'image' => 'required|file|mimes:jpeg,png,jpg,gif,svg|max:2048'
-            // ]);
-    
-            // if ($validateUser->fails()) {
-            //     return response()->json([
-            //         'success' => false,
-            //         'message' => 'Validation error',
-            //         'errors' => $validateUser->errors()
-            //     ], 422);
-            // }
-    
-            $img = $request->file('image');
-            $ext = $img->extension();
-            $imageName = time() . '.' . $ext;
-            $img->move(public_path('uploads'), $imageName);
-    
             $user = User::find($id);
             $user->update([
                 'image' => $imageName
             ]);
-    
             return response()->json([
                 'success' => true,
                 'data' => $user,
@@ -204,7 +202,4 @@ class AuthController extends Controller
             ], 404);
         }
     }
-    
-
-
 }
