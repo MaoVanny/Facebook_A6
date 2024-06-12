@@ -56,10 +56,10 @@ Route::delete('/post/delete/{id}', [PostController::class, 'destroy']);
 
 //Comment route
 Route::get('/comments', [CommentController::class, 'index']);
-Route::post('/comments', [CommentController::class, 'store']);
-Route::get('/comments/{id}', [CommentController::class, 'show']);
-Route::put('/comments/{id}', [CommentController::class, 'update']);
-Route::delete('/comments/{id}', [CommentController::class, 'destroy']);
+Route::post('/comment', [CommentController::class, 'store']);
+Route::get('/comment/{id}', [CommentController::class, 'show']);
+Route::put('/comment/{id}', [CommentController::class, 'update']);
+Route::delete('/comment/{id}', [CommentController::class, 'destroy']);
 
 
 // update users profile
