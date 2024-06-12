@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Like;
 use Illuminate\Http\Request;
+use App\Http\Requests\LikeRequest;
+use App\Http\Resources\LikeResource;
 
 class LikeController extends Controller
 {
@@ -13,14 +15,19 @@ class LikeController extends Controller
     public function index()
     {
         //
+        return LikeResource::collection(Like::all());
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+
+
+    public function store(LikeRequest $request)
     {
         //
+        $like = Like::create($request->all());
+        return LikeResource::collection($like);
     }
 
     /**
