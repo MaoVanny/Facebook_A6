@@ -6,9 +6,11 @@ use App\Http\Controllers\PostController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\LikeController;
+use App\Http\Controllers\PostLikeController;
 
 use App\Http\Controllers\AuthController;
-
+use App\Http\Resources\LikeResource;
 use PHPUnit\Framework\Reorderable;
 
 /*
@@ -39,7 +41,7 @@ Route::delete('/user/delete/{id}', [UserController::class, 'destroy']);
 
 
 // user login
-Route::get('user/list', [AuthController::class, 'index']);
+Route::get('/user/list', [AuthController::class, 'index']);
 Route::post('register/account', [AuthController::class, 'register'])->name('register');
 Route::post('login', [AuthController::class, 'login']);
 Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
@@ -67,3 +69,9 @@ Route::put('update/profile/{id}', [AuthController::class, 'update']);
 
 // view users profile
 Route::get('user/show/{id}', [AuthController::class, 'show']);
+
+
+//  route likes posts
+
+Route::get('/likes', [LikeController::class, 'index']);
+Route::post('/likes/create', [LikeController::class, 'store']);

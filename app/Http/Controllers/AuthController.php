@@ -87,7 +87,7 @@ class AuthController extends Controller
         if (!Auth::attempt($credentials)) {
             return response()->json([
                 'message' => 'User not found'
-            ], 401);
+            ], 401); 
         }
 
         $user   = User::where('phone_number', $request->phone_number)->firstOrFail();

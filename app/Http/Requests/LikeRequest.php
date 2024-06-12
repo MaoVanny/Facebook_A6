@@ -22,6 +22,8 @@ class LikeRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'post_id' =>'required',
+            'user_id' =>'required',
             //
         ];
     }
