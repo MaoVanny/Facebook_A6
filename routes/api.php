@@ -46,4 +46,4 @@ Route::put('update/profile/{id}', [AuthController::class, 'update']);
 Route::get('user/show/{id}',[AuthController::class, 'show']);
 
 // update images profile
-Route::put('update/image/{id}',[AuthController::class, 'uploadProfile']);
+Route::post('update/image/{id}',[AuthController::class, 'uploadProfile']);
