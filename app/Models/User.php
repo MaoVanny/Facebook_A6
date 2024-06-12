@@ -22,7 +22,6 @@ class User extends Authenticatable
     protected $fillable = [
         'username',
         'password',
-        'email',
         'phone_number'
     ];
 
@@ -48,15 +47,21 @@ class User extends Authenticatable
     public function posts()
     {
         return $this->hasMany(Post::class);
-
-        //  public static function createOrUpdate($request, $id = null) {
-        //     $user = $request->only('username', 'phone_number', 'password');
-        //     $user = self::updateOrCreate(['id' => $id], $user);
-        //     return $user;
     }
+    //  public static function createOrUpdate($request, $id = null) {
+    //     $user = $request->only('username', 'phone_number', 'password');
+    //     $user = self::updateOrCreate(['id' => $id], $user);
+    //     return $user;
+    // }
 
     public function comment(): HasMany
     {
         return $this->hasMany(Comment::class);
+    }
+    
+
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
     }
 }

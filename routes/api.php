@@ -6,9 +6,11 @@ use App\Http\Controllers\PostController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\LikeController;
+use App\Http\Controllers\PostLikeController;
 
 use App\Http\Controllers\AuthController;
-
+use App\Http\Resources\LikeResource;
 use PHPUnit\Framework\Reorderable;
 
 /*
@@ -39,7 +41,7 @@ Route::delete('/user/delete/{id}', [UserController::class, 'destroy']);
 
 
 // user login
-Route::get('user/list', [AuthController::class, 'index']);
+Route::get('/user/list', [AuthController::class, 'index']);
 Route::post('register/account', [AuthController::class, 'register'])->name('register');
 Route::post('login', [AuthController::class, 'login']);
 Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
@@ -56,10 +58,10 @@ Route::delete('/post/delete/{id}', [PostController::class, 'destroy']);
 
 //Comment route
 Route::get('/comments', [CommentController::class, 'index']);
-Route::post('/comments', [CommentController::class, 'store']);
-Route::get('/comments/{id}', [CommentController::class, 'show']);
-Route::put('/comments/{id}', [CommentController::class, 'update']);
-Route::delete('/comments/{id}', [CommentController::class, 'destroy']);
+Route::post('/comment/create', [CommentController::class, 'store']);
+Route::get('/comment/{id}', [CommentController::class, 'show']);
+Route::put('/comment/update/{id}', [CommentController::class, 'update']);
+Route::delete('/comment/delete/{id}', [CommentController::class, 'destroy']);
 
 
 // update users profile
@@ -67,3 +69,9 @@ Route::put('update/profile/{id}', [AuthController::class, 'update']);
 
 // view users profile
 Route::get('user/show/{id}', [AuthController::class, 'show']);
+
+
+//  route likes posts
+
+Route::get('/likes', [LikeController::class, 'index']);
+Route::post('/likes/create', [LikeController::class, 'store']);

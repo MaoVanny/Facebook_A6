@@ -6,11 +6,24 @@ use App\Models\Comment;
 use Illuminate\Http\Request;
 use App\Http\Requests\CommentRequest;
 use App\Http\Resources\CommentResource;
+use OpenApi\Annotations as OA;
 
 class CommentController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *     path="/api/comments",
+     *     summary="Get all comments",
+     *     tags={"Comments"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="List of comments",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/CommentResource")
+     *         )
+     *     )
+     * )
      */
     public function index()
     {
@@ -19,9 +32,7 @@ class CommentController extends Controller
         return response(['success' => true, 'data' => $comment], 200);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+  
     public function store(CommentRequest $request)
     {
         $comment = Comment::create($request->validated());
