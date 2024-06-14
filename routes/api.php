@@ -10,6 +10,8 @@ use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PostLikeController;
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\FriendController;
+use App\Http\Controllers\FriendRequestController;
 use App\Http\Resources\LikeResource;
 use PHPUnit\Framework\Reorderable;
 
@@ -77,3 +79,11 @@ Route::get('user/show/{id}', [AuthController::class, 'show']);
 
 Route::get('/likes', [LikeController::class, 'index']);
 Route::post('/likes/create', [LikeController::class, 'store']);
+
+
+// Route friend
+Route::post('/friend/request',[FriendController::class,'store']);
+Route::post('/friend/accept', [FriendController::class, 'accept']);
+Route::get('/friend/requested/{id}', [FriendController::class, 'showAllRequests']);
+Route::get('/friend/list/{id}', [FriendController::class, 'showAllFriends']);
+Route::delete('/friend/unfriend/{friendId}', [FriendController::class, 'destroy']);
