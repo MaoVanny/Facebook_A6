@@ -68,6 +68,7 @@ Route::delete('/comment/delete/{id}', [CommentController::class, 'destroy']);
 Route::put('update/profile/{id}', [AuthController::class, 'update']);
 
 // view users profile
+<<<<<<< HEAD
 Route::get('user/show/{id}', [AuthController::class, 'show']);
 
 
@@ -75,3 +76,9 @@ Route::get('user/show/{id}', [AuthController::class, 'show']);
 
 Route::get('/likes', [LikeController::class, 'index']);
 Route::post('/likes/create', [LikeController::class, 'store']);
+=======
+Route::get('user/show/{id}',[AuthController::class, 'show']);
+
+// update images profile
+Route::post('update/image/{id}',[AuthController::class, 'uploadProfile']);
+>>>>>>> update_image

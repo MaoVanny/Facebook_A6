@@ -165,4 +165,41 @@ class AuthController extends Controller
             ], 500);
         }
     }
+
+    // update image profile
+
+    public function uploadProfile(Request $request, $id)
+    {
+        $validateUser = Validator::make($request->all(), [
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+        ]);
+        if ($validateUser->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'validation error',
+                'errors' => $validateUser->errors()
+            ], 422);
+        }
+        $img = $request->image;
+        $ext = $img->getClientOriginalExtension();
+        $imageName = time() . '.' . $ext;
+        $img->move(public_path() . '/uploads/', $imageName);
+
+        try {
+            $user = User::find($id);
+            $user->update([
+                'image' => $imageName
+            ]);
+            return response()->json([
+                'success' => true,
+                'data' => $user,
+                'message' => 'Profile updated successfully'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 404);
+        }
+    }
 }
