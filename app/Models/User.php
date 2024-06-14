@@ -22,12 +22,8 @@ class User extends Authenticatable
     protected $fillable = [
         'username',
         'password',
-<<<<<<< HEAD
-        'phone_number'
-=======
         'phone_number',
         'image',
->>>>>>> update_image
     ];
 
     /**

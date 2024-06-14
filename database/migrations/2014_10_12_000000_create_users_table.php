@@ -15,12 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('username');
             $table->string('password');
-<<<<<<< HEAD
-            $table->string('phone_number')->unique();
-=======
             $table->integer('phone_number')->unique();
             $table->string('image')->nullable();
->>>>>>> update_image
             $table->rememberToken();
             $table->timestamps();
         });
