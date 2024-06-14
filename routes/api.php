@@ -7,10 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LikeController;
-use App\Http\Controllers\PostLikeController;
-
 use App\Http\Controllers\AuthController;
-use App\Http\Resources\LikeResource;
 use PHPUnit\Framework\Reorderable;
 
 /*
@@ -31,7 +28,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // defult on home page swagger
 Route::get('/home', [HomePage::class, 'index']);
 
-
 //  user routes
 Route::get('/user', [UserController::class, 'index']);
 Route::get('/user/{id}', [UserController::class, 'show']);
@@ -48,7 +44,6 @@ Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanct
 
 
 // post routes
-
 Route::get('/post', [PostController::class, 'index']);
 Route::get('/post/{id}', [PostController::class, 'show']);
 Route::post('/post/create', [PostController::class, 'store']);
@@ -72,6 +67,7 @@ Route::get('user/show/{id}', [AuthController::class, 'show']);
 
 
 //  route likes posts
-
-Route::get('/likes', [LikeController::class, 'index']);
-Route::post('/likes/create', [LikeController::class, 'store']);
+Route::get('/like', [LikeController::class, 'index']);
+Route::put('/like/update/{id}', [LikeController::class, 'update']);
+Route::post('/posts/like', [LikeController::class, 'likePost']);
+Route::delete('/posts/{id}/unlike', [LikeController::class, 'unlikePost']);

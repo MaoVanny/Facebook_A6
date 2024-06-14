@@ -22,9 +22,9 @@ class LikeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'post_id' =>'required',
-            'user_id' =>'required',
-            //
+            'post_id' => 'required|integer',
+            'user_id' => 'required|integer',
+            'type_likes' =>'required|string',
         ];
     }
 }
