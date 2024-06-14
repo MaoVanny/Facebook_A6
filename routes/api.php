@@ -8,7 +8,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\AuthController;
-use PHPUnit\Framework\Reorderable;
+use App\Http\Controllers\FriendController;
+// use App\Http\Controllers\FriendRequestController;
+// use App\Http\Resources\LikeResource;
+// use PHPUnit\Framework\Reorderable;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,6 +44,8 @@ Route::get('/user/list', [AuthController::class, 'index']);
 Route::post('register/account', [AuthController::class, 'register'])->name('register');
 Route::post('login', [AuthController::class, 'login']);
 Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+Route::post('reset/password', [AuthController::class, 'reset']);
+
 
 
 // post routes
@@ -53,10 +58,10 @@ Route::delete('/post/delete/{id}', [PostController::class, 'destroy']);
 
 //Comment route
 Route::get('/comments', [CommentController::class, 'index']);
-Route::post('/comments', [CommentController::class, 'store']);
-Route::get('/comments/{id}', [CommentController::class, 'show']);
-Route::put('/comments/{id}', [CommentController::class, 'update']);
-Route::delete('/comments/{id}', [CommentController::class, 'destroy']);
+Route::post('/comment', [CommentController::class, 'store']);
+Route::get('/comment/{id}', [CommentController::class, 'show']);
+Route::put('/comment/{id}', [CommentController::class, 'update']);
+Route::delete('/comment/{id}', [CommentController::class, 'destroy']);
 
 
 // update users profile
@@ -71,3 +76,14 @@ Route::get('/like', [LikeController::class, 'index']);
 Route::put('/like/update/{id}', [LikeController::class, 'update']);
 Route::post('/posts/like', [LikeController::class, 'likePost']);
 Route::delete('/posts/{id}/unlike', [LikeController::class, 'unlikePost']);
+
+Route::get('/likes', [LikeController::class, 'index']);
+Route::post('/likes/create', [LikeController::class, 'store']);
+
+
+// Route friend
+Route::post('/friend/request', [FriendController::class, 'store']);
+Route::post('/friend/accept', [FriendController::class, 'accept']);
+Route::get('/friend/requested/{id}', [FriendController::class, 'showAllRequests']);
+Route::get('/friend/list/{id}', [FriendController::class, 'showAllFriends']);
+Route::delete('/friend/unfriend/{friendId}', [FriendController::class, 'destroy']);

@@ -165,4 +165,21 @@ class AuthController extends Controller
             ], 500);
         }
     }
+
+
+    public function reset(Request $request)
+    {
+        $validatedData = $request->validate([
+            'phone_number' => 'required|string',
+            'password' => 'required|string|min:8',
+        ]);
+        $user = User::wherePhoneNumber($request->input('phone_number'))->first();
+        if (!$user) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+        $user->password = bcrypt($request->input('password'));
+        $user->save();
+        return response()->json(['success' => 'Password reset successfully'], 200);
+    }
+ 
 }

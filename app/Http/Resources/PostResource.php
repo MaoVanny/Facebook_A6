@@ -26,6 +26,7 @@ class PostResource extends JsonResource
             'updated_at' => $this->updated_at,
             'likes' => LikeResource::collection($this->likes()->get()),
             'like_count' => $this->Likes->count(),
+            'comment'=> CommentResource::collection($this->comment)
         ];
     }
 }
