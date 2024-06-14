@@ -12,6 +12,7 @@ use App\Http\Controllers\PostLikeController;
 use App\Http\Controllers\AuthController;
 use App\Http\Resources\LikeResource;
 use PHPUnit\Framework\Reorderable;
+use App\Http\Controllers\ShareController;
 
 /*
 |--------------------------------------------------------------------------
@@ -75,3 +76,7 @@ Route::get('user/show/{id}', [AuthController::class, 'show']);
 
 Route::get('/likes', [LikeController::class, 'index']);
 Route::post('/likes/create', [LikeController::class, 'store']);
+
+// share 
+Route::get('share/list', [ShareController::class, 'index']);
+Route::post('share', [ShareController::class, 'store']);
