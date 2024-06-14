@@ -7,11 +7,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LikeController;
-use App\Http\Controllers\PostLikeController;
-
 use App\Http\Controllers\AuthController;
-use App\Http\Resources\LikeResource;
-use PHPUnit\Framework\Reorderable;
+use App\Http\Controllers\FriendController;
+// use App\Http\Controllers\FriendRequestController;
+// use App\Http\Resources\LikeResource;
+// use PHPUnit\Framework\Reorderable;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,7 +31,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // defult on home page swagger
 Route::get('/home', [HomePage::class, 'index']);
 
-
 //  user routes
 Route::get('/user', [UserController::class, 'index']);
 Route::get('/user/{id}', [UserController::class, 'show']);
@@ -45,10 +44,11 @@ Route::get('/user/list', [AuthController::class, 'index']);
 Route::post('register/account', [AuthController::class, 'register'])->name('register');
 Route::post('login', [AuthController::class, 'login']);
 Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+Route::post('reset/password', [AuthController::class, 'reset']);
+
 
 
 // post routes
-
 Route::get('/post', [PostController::class, 'index']);
 Route::get('/post/{id}', [PostController::class, 'show']);
 Route::post('/post/create', [PostController::class, 'store']);
@@ -58,27 +58,39 @@ Route::delete('/post/delete/{id}', [PostController::class, 'destroy']);
 
 //Comment route
 Route::get('/comments', [CommentController::class, 'index']);
-Route::post('/comment/create', [CommentController::class, 'store']);
+Route::post('/comment', [CommentController::class, 'store']);
 Route::get('/comment/{id}', [CommentController::class, 'show']);
-Route::put('/comment/update/{id}', [CommentController::class, 'update']);
-Route::delete('/comment/delete/{id}', [CommentController::class, 'destroy']);
+Route::put('/comment/{id}', [CommentController::class, 'update']);
+Route::delete('/comment/{id}', [CommentController::class, 'destroy']);
 
 
 // update users profile
 Route::put('update/profile/{id}', [AuthController::class, 'update']);
 
 // view users profile
-<<<<<<< HEAD
+
 Route::get('user/show/{id}', [AuthController::class, 'show']);
 
 
 //  route likes posts
+Route::get('/like', [LikeController::class, 'index']);
+Route::put('/like/update/{id}', [LikeController::class, 'update']);
+Route::post('/posts/like', [LikeController::class, 'likePost']);
+Route::delete('/posts/{id}/unlike', [LikeController::class, 'unlikePost']);
 
 Route::get('/likes', [LikeController::class, 'index']);
 Route::post('/likes/create', [LikeController::class, 'store']);
-=======
 Route::get('user/show/{id}',[AuthController::class, 'show']);
 
 // update images profile
 Route::post('update/image/{id}',[AuthController::class, 'uploadProfile']);
->>>>>>> update_image
+
+
+
+// Route friend
+Route::post('/friend/request', [FriendController::class, 'store']);
+Route::post('/friend/accept', [FriendController::class, 'accept']);
+Route::get('/friend/requested/{id}', [FriendController::class, 'showAllRequests']);
+Route::get('/friend/list/{id}', [FriendController::class, 'showAllFriends']);
+Route::delete('/friend/unfriend/{friendId}', [FriendController::class, 'destroy']);
+

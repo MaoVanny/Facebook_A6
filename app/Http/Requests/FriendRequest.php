@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class LikeRequest extends FormRequest
+class FriendRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,9 +22,9 @@ class LikeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'post_id' => 'required|integer',
+
             'user_id' => 'required|integer',
-            'type_likes' =>'required|string',
+            'friend_id' => 'required|integer'
         ];
     }
 }
