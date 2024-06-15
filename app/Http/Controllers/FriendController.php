@@ -20,6 +20,33 @@ class FriendController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+    /**
+     * @OA\Post(
+     *     path="/api/friend/request",
+     *     summary="Create a new friend request",
+     *     tags={"Friend"},
+     *     @OA\RequestBody(    
+     *         required=true,
+     *         description="Create new friend request to the specific person",
+     *         @OA\JsonContent(ref="#/components/schemas/FriendRequest")
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Friend request created successfully",
+     *         @OA\JsonContent(ref="#/components/schemas/FriendResource")
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Validation error",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="message", type="string", example="The given data was invalid."),
+     *             @OA\Property(property="errors", type="object", example={"friend_id": {"The friend_id field is required."}})
+     *         )
+     *     )
+     * )
+     */
+
     public function store(FriendRequest $request)
     {
         $validatedData = $request->validated();
@@ -42,6 +69,32 @@ class FriendController extends Controller
     
     /**
      * Accept a friend request.
+     */
+    /**
+     * @OA\Post(
+     *     path="/api/friend/accept",
+     *     summary="Accept a friend request",
+     *     tags={"Friend"},
+     *     @OA\RequestBody(    
+     *         required=true,
+     *         description="Accept a friend request to the specific requested",
+     *         @OA\JsonContent(ref="#/components/schemas/FriendRequest")
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Friend accept is successfully",
+     *         @OA\JsonContent(ref="#/components/schemas/FriendResource")
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Validation error",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="message", type="string", example="The given data was invalid."),
+     *             @OA\Property(property="errors", type="object", example={"friend_id": {"The friend_id field is required."}})
+     *         )
+     *     )
+     * )
      */
     public function accept(FriendRequest $request)
     {
@@ -66,6 +119,21 @@ class FriendController extends Controller
     /**
      * Display the the user who request to be your friend
      */
+    /**
+     * @OA\Get(
+     *     path="/api/friend/requested/{id}",
+     *     summary="Get all who requested to be your facebook friends",
+     *     tags={"Friend"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="List all of people who requested to be your facebook friends",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/FriendResource")
+     *         )
+     *     )
+     * )
+     */
     public function showAllRequests($id)
 {
     $user = User::find($id);
@@ -76,6 +144,22 @@ class FriendController extends Controller
 /**
      * Display the the user who is your fb friend
      */
+    /**
+     * @OA\Get(
+     *     path="/api/friend/list/{id}",
+     *     summary="Get all your facebook friends",
+     *     tags={"Friend"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="List all of your facebook friends",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/FriendResource")
+     *         )
+     *     )
+     * )
+     */
+
 public function showAllFriends($id)
 {
     $user = User::find($id);
@@ -93,6 +177,36 @@ public function showAllFriends($id)
 
     /**
      * Remove the specified resource from storage.
+     */
+
+    /**
+     * @OA\Delete(
+     *     path="/api/friend/unfriend/{friendId}",
+     *     summary="Delete a friend or Unfriend",
+     *     tags={"Friend"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="Insert ID your facebook friend ID to for unfriend",
+     *         @OA\Schema(
+     *             type="integer",
+     *             format="int64"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=204,
+     *         description="Unfriend successfully"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="User not found",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="message", type="string", example="User not found")
+     *         )
+     *     )
+     * )
      */
     public function destroy($id)
     {
