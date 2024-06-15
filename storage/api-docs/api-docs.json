@@ -555,9 +555,39 @@
                     "description": "Post data",
                     "required": true,
                     "content": {
-                        "application/json": {
+                        "multipart/form-data": {
                             "schema": {
-                                "$ref": "#/components/schemas/PostRequest"
+                                "required": [
+                                    "title",
+                                    "description",
+                                    "user_id",
+                                    "image",
+                                    "video"
+                                ],
+                                "properties": {
+                                    "title": {
+                                        "description": "Title of the post",
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "description": "Description of the post",
+                                        "type": "string"
+                                    },
+                                    "user_id": {
+                                        "description": "User ID associated with the post",
+                                        "type": "integer",
+                                        "format": "int64"
+                                    },
+                                    "image": {
+                                        "description": "Image file (jpeg, png, jpg, gif, svg, max 2048KB)",
+                                        "type": "file"
+                                    },
+                                    "video": {
+                                        "description": "Video file (mp4, mov, ogg, qt, webm, 3gp, 3g2, mj2, mjp2, avi, wmv, flv, mpg, max 20480KB)",
+                                        "type": "file"
+                                    }
+                                },
+                                "type": "object"
                             }
                         }
                     }

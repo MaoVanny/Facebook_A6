@@ -47,10 +47,41 @@ class PostController extends Controller
      *     path="/api/post/create",
      *     summary="Create a new post",
      *     tags={"Posts"},
-     *     @OA\RequestBody(    
+     *     @OA\RequestBody(
      *         required=true,
      *         description="Post data",
-     *         @OA\JsonContent(ref="#/components/schemas/PostRequest")
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 required={"title", "description", "user_id", "image", "video"},
+     *                 @OA\Property(
+     *                     property="title",
+     *                     type="string",
+     *                     description="Title of the post"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="description",
+     *                     type="string",
+     *                     description="Description of the post"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="user_id",
+     *                     type="integer",
+     *                     format="int64",
+     *                     description="User ID associated with the post"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="image",
+     *                     type="file",
+     *                     description="Image file (jpeg, png, jpg, gif, svg, max 2048KB)"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="video",
+     *                     type="file",
+     *                     description="Video file (mp4, mov, ogg, qt, webm, 3gp, 3g2, mj2, mjp2, avi, wmv, flv, mpg, max 20480KB)"
+     *                 ),
+     *             )
+     *         )
      *     ),
      *     @OA\Response(
      *         response=201,
@@ -69,31 +100,31 @@ class PostController extends Controller
      * )
      */
     public function store(Request $request)
-{
-    $request->validate([
-        'title' => 'required|string',
-        'description' => 'required|string',
-        'user_id' => 'required|integer',
-        'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        'video' => 'required|file|mimes:mp4,mov,ogg,qt,webm,3gp,3g2,mj2,mjp2,avi,wmv,flv,mpg'
-    ]);
+    {
+        $request->validate([
+            'title' => 'required|string',
+            'description' => 'required|string',
+            'user_id' => 'required|integer',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'video' => 'required|file|mimes:mp4,mov,ogg,qt,webm,3gp,3g2,mj2,mjp2,avi,wmv,flv,mpg'
+        ]);
 
-    $img = $request->file('image');
-    $video = $request->file('video');
-    $imageName = time() . '.' . $img->extension();
-    $videoName = time() . '.' . $video->extension();
-    $img->move(public_path() . '/uploads/', $imageName);
-    $video->move(public_path() . '/uploads/', $videoName);
-    $post = Post::create([
-        'title' => $request->title,
-        'description' => $request->description,
-        'user_id' => $request->user_id,
-        'image' => $imageName,
-        'video' => $videoName,
-    ]);
+        $img = $request->file('image');
+        $video = $request->file('video');
+        $imageName = time() . '.' . $img->extension();
+        $videoName = time() . '.' . $video->extension();
+        $img->move(public_path() . '/uploads/', $imageName);
+        $video->move(public_path() . '/uploads/', $videoName);
+        $post = Post::create([
+            'title' => $request->title,
+            'description' => $request->description,
+            'user_id' => $request->user_id,
+            'image' => $imageName,
+            'video' => $videoName,
+        ]);
 
-    return new PostResource($post);
-}
+        return new PostResource($post);
+    }
 
     /**
      * @OA\Get(
