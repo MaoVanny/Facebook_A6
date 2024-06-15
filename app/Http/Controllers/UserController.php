@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Validator;
+
+use App\Http\Requests\UserRequest;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Http\Resources\UserResource;
-
+use Illuminate\Auth\Events\Validated;
 
 /**
  * @OA\Tag(
@@ -43,4 +46,69 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+
+    public function showProile(string $id)
+    {
+        $user = User::find($id);
+        return new UserResource($user);
+    }
+
+    /**
+     * @OA\Put(
+     *     path="/api/update/updateProfile/{id}",
+     *     summary="Update a user",
+     *     tags={"Users"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID of the user to update",
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         description="User data to update",
+     *         @OA\JsonContent(ref="#/components/schemas/UserRequest")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="User updated successfully",
+     *         @OA\JsonContent(ref="#/components/schemas/UserResource")
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="User not found",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="User not found")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Validation error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="The given data was invalid.")
+     *         )
+     *     )
+     * )
+     */
+
+    public function updateProile(Request $request, $id)
+    {
+        $profile = Validator::make($request->all(), [
+            'username' => 'required|string',
+            'phone_number' => 'required|string',
+        ]);
+
+        if ($profile->fails()) {
+            return response()->json(['error' => $profile->errors()], 422);
+        }
+
+        $user = User::find($id);
+        $user->username = $request->username;
+        $user->phone_number = $request->phone_number;
+        $user->save();
+        return new UserResource($user);
+    }
 }

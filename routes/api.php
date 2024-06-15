@@ -57,7 +57,7 @@ Route::delete('/post/delete/{id}', [PostController::class, 'destroy']);
 
 
 //Comment route
-Route::get('/comments', [CommentController::class, 'index']);
+Route::get('/comment', [CommentController::class, 'index']);
 Route::post('/comment', [CommentController::class, 'store']);
 Route::get('/comment/{id}', [CommentController::class, 'show']);
 Route::put('/comment/{id}', [CommentController::class, 'update']);
@@ -65,11 +65,10 @@ Route::delete('/comment/{id}', [CommentController::class, 'destroy']);
 
 
 // update users profile
-Route::put('update/profile/{id}', [AuthController::class, 'update']);
+Route::put('update/updateProfile/{id}', [UserController::class, 'updateProile']);
 
 // view users profile
-
-Route::get('user/show/{id}', [AuthController::class, 'show']);
+Route::get('user/profile/{id}', [UserController::class, 'showProile']);
 
 
 //  route likes posts
@@ -78,19 +77,19 @@ Route::put('/like/update/{id}', [LikeController::class, 'update']);
 Route::post('/posts/like', [LikeController::class, 'likePost']);
 Route::delete('/posts/{id}/unlike', [LikeController::class, 'unlikePost']);
 
-Route::get('/likes', [LikeController::class, 'index']);
-Route::post('/likes/create', [LikeController::class, 'store']);
-Route::get('user/show/{id}',[AuthController::class, 'show']);
 
-// update images profile
-Route::post('update/image/{id}',[AuthController::class, 'uploadProfile']);
+// Route::get('/likes', [LikeController::class, 'index']);
+// Route::post('/likes/create', [LikeController::class, 'store']);
+// Route::get('user/show/{id}', [AuthController::class, 'show']);
+// // update images profile
+// Route::post('update/image/{id}', [AuthController::class, 'uploadProfile']);
 
 
 
 // Route friend
+Route::get('friend/create', [FriendController::class, 'index']);
 Route::post('/friend/request', [FriendController::class, 'store']);
 Route::post('/friend/accept', [FriendController::class, 'accept']);
 Route::get('/friend/requested/{id}', [FriendController::class, 'showAllRequests']);
 Route::get('/friend/list/{id}', [FriendController::class, 'showAllFriends']);
 Route::delete('/friend/unfriend/{friendId}', [FriendController::class, 'destroy']);
-

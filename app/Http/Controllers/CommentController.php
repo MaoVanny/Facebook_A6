@@ -32,7 +32,6 @@ class CommentController extends Controller
         return response(['success' => true, 'data' => $comment], 200);
     }
 
-  
     public function store(CommentRequest $request)
     {
         $comment = Comment::create($request->validated());
@@ -42,23 +41,21 @@ class CommentController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Comment $comment)
+    public function show(string $comment)
     {
         //
+        $comment = Comment::findOrFail($comment);
+        return new CommentResource($comment);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(CommentRequest $request, string $id)
     {
-        $validatedData = $request->validate([
-            'description' => 'required|string',
-        ]);
-
-        $comment = Comment::findOrFail($id);
-        $comment->update(['description' => $validatedData['description'],]);
-        return new CommentResource($comment);
+        $commnet = Comment::find($id);
+        $commnet->update($request->all());
+        return new CommentResource($commnet);
     }
 
     /**

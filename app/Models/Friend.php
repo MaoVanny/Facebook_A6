@@ -12,10 +12,10 @@ class Friend extends Model
         'user_id',
         'friend_id'
     ];
+    
     public function friends()
     {
         return $this->belongsToMany(User::class, 'friend_requests', 'user_id', 'friend_id');
     }
-
 
 }
