@@ -162,12 +162,12 @@ class FriendController extends Controller
      * )
      */
 
-public function showAllFriends($id)
-{
-    $user = User::find($id);
-    $friends = Friend::where('user_id', $user->id)->where('accepted', 1)->get();
-    return response()->json($friends, 200);
-}
+    public function showAllFriends($id)
+    {
+        $user = User::find($id);
+        $friends = Friend::where('user_id', $user->id)->where('accepted', 1)->get();
+        return response()->json($friends, 200);
+    }
 
     /**
      * Update the specified resource in storage.

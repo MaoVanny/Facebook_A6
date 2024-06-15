@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Resources\PostResource;
 use App\Http\Requests\PostRequest;
 use App\Http\Requests\UserRequest;
+use Illuminate\Support\Facades\Validator;
+
 
 class PostController extends Controller
 {
@@ -66,12 +68,32 @@ class PostController extends Controller
      *     )
      * )
      */
-    public function store(PostRequest $request)
-    {
-        $post = Post::create($request->all());
-        return new PostResource($post);
-    }
+    public function store(Request $request)
+{
+    $request->validate([
+        'title' => 'required|string',
+        'description' => 'required|string',
+        'user_id' => 'required|integer',
+        'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        'video' => 'required|file|mimes:mp4,mov,ogg,qt,webm,3gp,3g2,mj2,mjp2,avi,wmv,flv,mpg'
+    ]);
 
+    $img = $request->file('image');
+    $video = $request->file('video');
+    $imageName = time() . '.' . $img->extension();
+    $videoName = time() . '.' . $video->extension();
+    $img->move(public_path() . '/uploads/', $imageName);
+    $video->move(public_path() . '/uploads/', $videoName);
+    $post = Post::create([
+        'title' => $request->title,
+        'description' => $request->description,
+        'user_id' => $request->user_id,
+        'image' => $imageName,
+        'video' => $videoName,
+    ]);
+
+    return new PostResource($post);
+}
 
     /**
      * @OA\Get(
