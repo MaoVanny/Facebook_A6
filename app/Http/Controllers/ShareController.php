@@ -15,7 +15,7 @@ class ShareController extends Controller
     {
         $share = Share::all();
         $share = ShareResource::collection($share);
-        return response(['success' => true, 'data' => $share, 'message'=>'You can get information from share!'], 200);
+        return response(['success' => true, 'data' => $share, 'message' => 'You can get information from share!'], 200);
     }
 
     /**
@@ -23,11 +23,8 @@ class ShareController extends Controller
      */
     public function store(Request $request)
     {
-        $validatedData = $request->validated();
-        $share = Share::create($validatedData);
-        $user_id = $share->user_id;
-        $post_id = $share->post_id;
-       
+        $shear = Share::create($request->all());
+        return new ShareResource($shear);
     }
 
     /**
