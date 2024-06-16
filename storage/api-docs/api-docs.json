@@ -781,6 +781,182 @@
                 }
             }
         },
+        "/api/share": {
+            "get": {
+                "tags": [
+                    "shares"
+                ],
+                "summary": "Display a listing of the shares.",
+                "operationId": "587ba8ce80f73db5a6cc5e5e69b5038a",
+                "responses": {
+                    "200": {
+                        "description": "A list of shares.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ShareResources"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/share/create": {
+            "post": {
+                "tags": [
+                    "shares"
+                ],
+                "summary": "Store a newly created shares.",
+                "operationId": "972244c67d9a64460523e9424e120865",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ShareRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "The created shares.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ShareResources"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Post not found."
+                    }
+                }
+            }
+        },
+        "/api/share/show/{id}": {
+            "get": {
+                "tags": [
+                    "shares"
+                ],
+                "summary": "Display the specified shares.",
+                "description": "Display the specified resource.",
+                "operationId": "8fdcad338f9bc58f235930562427ba2a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the share",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The specified share.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ShareResources"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Share not found."
+                    }
+                }
+            }
+        },
+        "/api/share/update/{id}": {
+            "put": {
+                "tags": [
+                    "shares"
+                ],
+                "summary": "Update the specified share.",
+                "description": "Update the specified resource identified by ID.",
+                "operationId": "2e064476a8dab40dea47717c88867604",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the share to update",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ShareRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Updated share.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ShareResources"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Share not found."
+                    }
+                }
+            }
+        },
+        "/api/share/delete/{id}": {
+            "delete": {
+                "tags": [
+                    "shares"
+                ],
+                "summary": "Delete the specified share.",
+                "description": "Delete the specified share identified by ID.",
+                "operationId": "b680ceb26c50eb7fec864fb181536236",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the share to delete",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Share deleted successfully.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ShareResources"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Share not found."
+                    }
+                }
+            }
+        },
         "/api/user": {
             "get": {
                 "tags": [
@@ -878,6 +1054,55 @@
                         }
                     }
                 }
+            }
+        },
+        "/api/user/delete/{id}": {
+            "delete": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Delete user profile by ID.",
+                "operationId": "3c4c598ec6b4d667dd85b9db2f8a2773",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the user",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User profile deleted.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User profile deleted successfully."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User not found."
+                    },
+                    "401": {
+                        "description": "Unauthorized. User not authenticated."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         }
     },

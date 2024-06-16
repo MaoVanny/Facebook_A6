@@ -23,6 +23,7 @@ class User extends Authenticatable
         'username',
         'password',
         'phone_number',
+        'email',
         'image',
     ];
 
@@ -69,5 +70,10 @@ class User extends Authenticatable
     public function friend()
     {
         return $this->hasMany(Friend::class);
+    }
+
+    public function UserShare()
+    {
+        return $this->hasMany(Share::class);
     }
 }

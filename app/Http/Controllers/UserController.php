@@ -112,4 +112,48 @@ class UserController extends Controller
         return new UserResource($user);
     }
 
+    /**
+     * @OA\Delete(
+     *     path="/api/user/delete/{id}",
+     *     tags={"Users"},
+     *     summary="Delete user profile by ID.",
+     *     security={
+     *         {"bearerAuth": {}}
+     *     },
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID of the user",
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="User profile deleted.",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="User profile deleted successfully.")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="User not found."
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthorized. User not authenticated."
+     *     )
+     * )
+     */
+    public function deleteProfile(string $id)
+    {
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json(['message' => 'User not found.'], 404);
+        }
+        $user->delete();
+        return response()->json(['message' => 'User profile deleted successfully.']);
+    }
 }

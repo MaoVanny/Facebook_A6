@@ -51,7 +51,7 @@ class LikeController extends Controller
      */
     public function likePost(LikeRequest $request)
     {
-        
+
         $like = Like::create($request->all());
         return new LikeResource($like);
     }
