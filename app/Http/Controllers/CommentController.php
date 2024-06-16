@@ -61,7 +61,7 @@ class CommentController extends Controller
      *     )
      * )
      */
-  
+
     public function store(CommentRequest $request)
     {
         $comment = Comment::create($request->validated());
@@ -78,7 +78,7 @@ class CommentController extends Controller
         return new CommentResource($comment);
     }
 
-  /**
+    /**
      * Update the specified resource in storage.
      */
     /**
@@ -124,7 +124,7 @@ class CommentController extends Controller
         return new CommentResource($commnet);
     }
 
-     /**
+    /**
      * Remove the specified resource from storage.
      */
 

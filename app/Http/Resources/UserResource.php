@@ -19,11 +19,14 @@ class UserResource extends JsonResource
             'id' => $this->id,
             'username' => $this->username,
             'phone_number' => $this->phone_number,
+            'image' => $this->image,
+            'email' => $this->email,
             'email_verified_at' => $this->email_verified_at,
             'password' => $this->password,
             'remember_token' => $this->remember_token,
             'posts' => PostResource::collection($this->posts),
             "Friend_Facebook" => $this->friend->count(),
+            "share_facebook" => ShareResources::collection($this->UserShare),
         ];
     }
 }
