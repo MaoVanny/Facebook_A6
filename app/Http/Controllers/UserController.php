@@ -47,9 +47,43 @@ class UserController extends Controller
      * Store a newly created resource in storage.
      */
 
-    public function showProile(string $id)
+    /**
+     * @OA\Get(
+     *      path="/api/user/profile/{id}",
+     *      operationId="getUserById",
+     *      tags={"Users"},
+     *      summary="Get user details",
+     *      description="Returns user details by user ID",
+     *      @OA\Parameter(
+     *          name="id",
+     *          in="path",
+     *          required=true,
+     *          description="ID of the user to fetch",
+     *          @OA\Schema(
+     *              type="integer",
+     *              format="int64"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/UserResource")
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="User not found"
+     *      )
+     * )
+     */
+
+    public function showProfile(string $id)
     {
         $user = User::find($id);
+
+        if (!$user) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+
         return new UserResource($user);
     }
 

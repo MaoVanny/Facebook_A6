@@ -64,7 +64,7 @@ Route::delete('/comment/{id}', [CommentController::class, 'destroy']);
 
 //  users profile
 Route::put('update/updateProfile/{id}', [UserController::class, 'updateProile']);
-Route::get('user/profile/{id}', [UserController::class, 'showProile']);
+Route::get('/user/profile/{id}', [UserController::class, 'showProfile']);
 Route::delete('/user/delete/{id}', [UserController::class, 'deleteProfile']);
 
 
